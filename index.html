@@ -22,20 +22,15 @@
     h1 {
       font-size: 24px;
       color: #333;
-      margin: 10px 0 10px 0;
+      margin: 10px 0;
     }
     .input-row {
       display: flex;
       gap: 10px;
       justify-content: center;
     }
-    .input-row input,
-    .input-row button {
-      width: 50%;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
     .input-row input {
+      width: 40%;
       padding: 10px;
       border: 2px solid #ccc;
       border-radius: 8px;
@@ -46,13 +41,15 @@
       border-color: #0057E1;
     }
     .input-row button {
-      background-color: #0057E1;
-      color: white;
+      width: 30%;
+      font-size: 16px;
       padding: 12px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s, transform 0.2s;
+      background-color: #0057E1;
+      color: white;
     }
     .input-row button:hover {
       background-color: #0057E1;
@@ -81,26 +78,19 @@
       box-shadow: 0 -6px 15px rgba(0, 0, 0, 0.3);
       position: relative;
     }
-    .popup-content {
-      height: 100%;
-    }
     .close-btn {
       position: absolute;
       top: 10px;
       right: 10px;
       background: #0057E1;
-      color: #ffffff;
+      color: #fff;
       border: none;
       font-size: 32px;
-      cursor: pointer;
       border-radius: 50%;
       width: 50px;
       height: 50px;
-      display: flex;              
-      align-items: center;       
-      justify-content: center;   
+      cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      z-index: 101;
     }
     iframe {
       width: 100%;
@@ -117,28 +107,39 @@
     <div class="input-row">
       <input type="text" id="pdbInput" placeholder="PDB ID (e.g. 2QK9)">
       <button id="viewBtn">View Structure</button>
+      <button id="gotoPdbBtn">Go to PDB</button>
     </div>
   </div>
+
   <div id="popupWrapper" class="popup-wrapper">
-    <div id="popup" class="popup">
+    <div class="popup">
       <button id="closeBtn" class="close-btn">&times;</button>
-      <div class="popup-content">
-        <iframe id="structureFrame" src=""></iframe>
-      </div>
+      <iframe id="structureFrame" src=""></iframe>
     </div>
   </div>
+
   <script>
     document.getElementById("viewBtn").addEventListener("click", function() {
-      var pdbId = document.getElementById("pdbInput").value.trim();
-      if (pdbId === "") {
+      const pdbId = document.getElementById("pdbInput").value.trim();
+      if (!pdbId) {
         alert("Please enter PDB ID.");
         return;
       }
-      var baseUrl = "https://pdbj.org/molmil2/#fetch%20{$pdb_id};%20hide%20cartoon,%20all;%20show%20sticks,%20all;%20hide%20sticks,%20hydro;%20orient%20all;%20color%20orange,%20resn%20A;%20color%20cyan,%20resn%20G;%20color%20green,%20resn%20C;%20color%20purple,%20resn%20U;%20color%20orange,%20resn%20DA;%20color%20cyan,%20resn%20DG;%20color%20green,%20resn%20DC;%20color%20purple,%20resn%20DT;%20color%20red,%20symbol%20O;%20color%20blue,%20symbol%20N;%20show%20cartoon,%20resn%20ALA;%20show%20cartoon,%20resn%20ARG;%20show%20cartoon,%20resn%20ASN;%20show%20cartoon,%20resn%20ASP;%20show%20cartoon,%20resn%20CYS;%20show%20cartoon,%20resn%20GLN;%20show%20cartoon,%20resn%20GLU;%20show%20cartoon,%20resn%20GLY;%20show%20cartoon,%20resn%20HIS;%20show%20cartoon,%20resn%20ILE;%20show%20cartoon,%20resn%20LEU;%20show%20cartoon,%20resn%20LYS;%20show%20cartoon,%20resn%20MET;%20show%20cartoon,%20resn%20PHE;%20show%20cartoon,%20resn%20PRO;%20show%20cartoon,%20resn%20SER;%20show%20cartoon,%20resn%20THR;%20show%20cartoon,%20resn%20TRP;%20show%20cartoon,%20resn%20TYR;%20show%20cartoon,%20resn%20VAL;";
-      var url = baseUrl.replace("{$pdb_id}", encodeURIComponent(pdbId));
+      const baseUrl = "https://pdbj.org/molmil2/#fetch%20{$pdb_id};%20hide%20cartoon,%20all;%20show%20sticks,%20all;%20hide%20sticks,%20hydro;%20orient%20all;%20color%20orange,%20resn%20A;%20color%20cyan,%20resn%20G;%20color%20green,%20resn%20C;%20color%20purple,%20resn%20U;%20color%20orange,%20resn%20DA;%20color%20cyan,%20resn%20DG;%20color%20green,%20resn%20DC;%20color%20purple,%20resn%20DT;%20color%20red,%20symbol%20O;%20color%20blue,%20symbol%20N;%20show%20cartoon,%20resn%20ALA;%20show%20cartoon,%20resn%20ARG;%20show%20cartoon,%20resn%20ASN;%20show%20cartoon,%20resn%20ASP;%20show%20cartoon,%20resn%20CYS;%20show%20cartoon,%20resn%20GLN;%20show%20cartoon,%20resn%20GLU;%20show%20cartoon,%20resn%20GLY;%20show%20cartoon,%20resn%20HIS;%20show%20cartoon,%20resn%20ILE;%20show%20cartoon,%20resn%20LEU;%20show%20cartoon,%20resn%20LYS;%20show%20cartoon,%20resn%20MET;%20show%20cartoon,%20resn%20PHE;%20show%20cartoon,%20resn%20PRO;%20show%20cartoon,%20resn%20SER;%20show%20cartoon,%20resn%20THR;%20show%20cartoon,%20resn%20TRP;%20show%20cartoon,%20resn%20TYR;%20show%20cartoon,%20resn%20VAL;";
+      const url = baseUrl.replace("{$pdb_id}", encodeURIComponent(pdbId));
       document.getElementById("structureFrame").src = url;
       document.getElementById("popupWrapper").classList.add("show");
     });
+
+    document.getElementById("gotoPdbBtn").addEventListener("click", function() {
+      const pdbId = document.getElementById("pdbInput").value.trim();
+      if (!pdbId) {
+        alert("Please enter PDB ID.");
+        return;
+      }
+      window.open(`https://www.rcsb.org/structure/${encodeURIComponent(pdbId)}`, "_blank");
+    });
+
     document.getElementById("closeBtn").addEventListener("click", function() {
       document.getElementById("popupWrapper").classList.remove("show");
       document.getElementById("structureFrame").src = "";
