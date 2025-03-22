@@ -1,6 +1,6 @@
 You can access this website via the following URL. https://s-ando-biophysics.github.io/3D-Structure-Viewer-Using-Molmil/
 
-## Instructions
+## Overview
 This website uses the molecular structure viewer Molmil, optimized mainly for visualization of nucleic acid structures. Molmil is software developed by Gert-Jan Bekker et al. For details, please refer to the following information.
 
 ## Customization
