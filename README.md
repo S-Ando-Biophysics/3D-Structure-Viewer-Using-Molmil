@@ -1,5 +1,4 @@
 # NA Structure Viewer Using Molmil
-You can access this website via the following URL. https://s-ando-biophysics.github.io/Molmil-NA/
 
 ## Overview
 This website uses the molecular structure viewer Molmil, optimized mainly for visualization of nucleic acid structures. 
